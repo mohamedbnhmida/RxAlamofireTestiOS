@@ -10,6 +10,7 @@
 		30593BB8D619846DA19B4271 /* Pods_RxAlamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D88CCFF2FC281FF765803B6D /* Pods_RxAlamofire.framework */; };
 		D34F9F5D40D6919A304D55F4 /* Pods_RxAlamofire_RxAlamofireUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B18B7332955FDD616B2E370E /* Pods_RxAlamofire_RxAlamofireUITests.framework */; };
 		E81619322C94995000213A44 /* NetworkLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81619312C94995000213A44 /* NetworkLogger.swift */; };
+		E8717C742D0B23160079F7D3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E8717C732D0B23160079F7D3 /* GoogleService-Info.plist */; };
 		E8F35C812C2594900036B5EC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F35C802C2594900036B5EC /* AppDelegate.swift */; };
 		E8F35C832C2594900036B5EC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F35C822C2594900036B5EC /* SceneDelegate.swift */; };
 		E8F35C852C2594900036B5EC /* ProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F35C842C2594900036B5EC /* ProductListViewController.swift */; };
@@ -58,6 +59,7 @@
 		D88CCFF2FC281FF765803B6D /* Pods_RxAlamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxAlamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDF1B5F581267C8EFFFE2637 /* Pods_RxAlamofireTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxAlamofireTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E81619312C94995000213A44 /* NetworkLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkLogger.swift; sourceTree = "<group>"; };
+		E8717C732D0B23160079F7D3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E8F35C7D2C2594900036B5EC /* RxAlamofire.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxAlamofire.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8F35C802C2594900036B5EC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E8F35C822C2594900036B5EC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 		E8F35C742C2594900036B5EC = {
 			isa = PBXGroup;
 			children = (
+				E8717C732D0B23160079F7D3 /* GoogleService-Info.plist */,
 				E8F35C7F2C2594900036B5EC /* RxAlamofire */,
 				E8F35C962C2594910036B5EC /* RxAlamofireTests */,
 				E8F35CA02C2594910036B5EC /* RxAlamofireUITests */,
@@ -359,6 +362,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E8F35C8A2C2594910036B5EC /* Assets.xcassets in Resources */,
+				E8717C742D0B23160079F7D3 /* GoogleService-Info.plist in Resources */,
 				E8F35C8D2C2594910036B5EC /* Base in Resources */,
 				E8F35C882C2594900036B5EC /* Base in Resources */,
 			);

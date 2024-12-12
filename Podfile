@@ -19,6 +19,11 @@ target 'RxAlamofire' do
   pod 'RxCocoa', '~> 6.0'
   pod 'Resolver', '~> 1.4'
   pod 'Kingfisher'
-  pod 'Alamofire' 
+  pod 'Alamofire'
+  # Add the Firebase pod for Google Analytics
+  pod 'FirebaseCore'
+  pod 'FirebaseAuth'
+
+  pod 'FirebaseAnalytics' 
 
 end
