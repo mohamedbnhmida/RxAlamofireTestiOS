@@ -1,0 +1,56 @@
+name: iOS Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+    name: Build and Deploy iOS App
+
+    steps:
+      # Step 1: Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Xcode 16.1
+      - name: Set up Xcode
+        uses: actions/setup-xcode@v3
+        with:
+          xcode-version: '16.1' # Specify Xcode version
+
+      # Step 3: Install CocoaPods and dependencies
+      - name: Install dependencies
+        run: |
+          brew install cocoapods || true # Install CocoaPods (ignore if already installed)
+          pod install # Install dependencies for your project
+
+      # Step 4: Build the iOS app
+      - name: Build iOS app
+        run: |
+          xcodebuild -workspace YourApp.xcworkspace \
+                     -scheme YourAppScheme \
+                     -sdk iphoneos \
+                     -configuration Release clean build \
+                     CODE_SIGN_STYLE=Automatic
+
+      # Step 5: Authenticate Firebase CLI using a token
+      - name: Authenticate Firebase CLI
+        run: |
+          npm install -g firebase-tools
+          firebase login:ci --no-localhost
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+      # Step 6: Upload the app to Firebase
+      - name: Deploy to Firebase
+        run: |
+          firebase appdistribution:distribute \
+            --app <Your_Firebase_App_ID> \
+            --token ${{ secrets.FIREBASE_TOKEN }} \
+            --groups testers
