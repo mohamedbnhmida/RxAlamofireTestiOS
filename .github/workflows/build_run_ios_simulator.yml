@@ -39,7 +39,7 @@ jobs:
                      -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.1' \
                      clean build \
                      CODE_SIGN_STYLE=Automatic
-      # Step 5: Ensure Simulator is Booted
+           # Step 5: Ensure Simulator is Booted
       - name: Ensure Simulator is Booted
         run: |
           # Open Simulator if not running
@@ -48,16 +48,23 @@ jobs:
             echo "Opening Simulator..."
             open -a Simulator
           fi
-          # Wait for a simulator to be booted
+
+          # Wait for a simulator to be booted with a timeout of 2 minutes (120 seconds)
           echo "Waiting for a simulator to boot..."
+          TIMEOUT=120
+          ELAPSED=0
           while true; do
             BOOTED_SIMULATORS=$(xcrun simctl list devices | grep -E "Booted" | wc -l)
             if [ "$BOOTED_SIMULATORS" -gt 0 ]; then
               echo "Simulator is booted."
               break
+            elif [ "$ELAPSED" -ge "$TIMEOUT" ]; then
+              echo "Timeout reached: No simulator booted within $TIMEOUT seconds."
+              exit 1
             else
               echo "No booted simulator found. Retrying in 5 seconds..."
               sleep 5
+              ELAPSED=$((ELAPSED + 5))
             fi
           done
       # Step 6: Install the .app file to the Simulator
