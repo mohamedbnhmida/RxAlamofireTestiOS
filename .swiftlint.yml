@@ -1,15 +1,29 @@
-disabled_rules: # rules to disable
-  - trailing_whitespace
-  - line_length
+# .swiftlint.yml
 
-opt_in_rules: # rules to enable
-  - empty_count
+# Disable specific rules
+disabled_rules:
+  - trailing_whitespace  # Disables the rule that enforces no trailing whitespace
+  - line_length          # Disables the rule that enforces a maximum line length
 
-included: # paths to include (default: all)
-  - RxAlamofire
+# Enable specific rules (opt-in)
+opt_in_rules:
+  - empty_count  # Enables the rule that checks for empty collections (like arrays or dictionaries)
 
-excluded: # paths to exclude
-  - Pods
-  - Carthage
-  - fastlane
-  - build
+# Define which files to include for linting
+included:
+  - RxAlamofire  # Include only the RxAlamofire directory (your main project folder)
+
+# Define which files to exclude from linting
+excluded:
+  - Pods       # Exclude the Pods directory (CocoaPods dependencies)
+  - Carthage   # Exclude the Carthage directory (Carthage dependencies)
+  - fastlane   # Exclude the fastlane directory (used for CI/CD tools)
+  - build      # Exclude the build directory (build artifacts)
+
+# Rules configuration
+rules:
+  duplicate_imports:  # Enable the rule for duplicate imports
+    severity: error    # Treat duplicate imports as an error
+
+  force_unwrapping:  # Enable the rule for force unwrapping
+    severity: error    # Treat force unwrapping as an error
