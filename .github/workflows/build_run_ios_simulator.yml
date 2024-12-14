@@ -29,8 +29,11 @@ jobs:
       # Step 3: Verify GoogleService-Info.plist
       - name: Verify GoogleService-Info.plist
         run: ls -a
-
-      # Step 4: Build the iOS App for Simulator
+      # Step 4: Run SwiftLint
+      - name: Run SwiftLint
+        run: |
+          swiftlint lint
+      # Step 5: Build the iOS App for Simulator
       - name: Build iOS App
         run: |
           xcodebuild -workspace RxAlamofire.xcworkspace \
@@ -39,7 +42,7 @@ jobs:
                      -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.1' \
                      clean build \
                      CODE_SIGN_STYLE=Automatic
-           # Step 5: Ensure Simulator is Booted
+      # Step 6: Ensure Simulator is Booted
       - name: Ensure Simulator is Booted
         run: |
           # Open Simulator if not running
@@ -67,7 +70,7 @@ jobs:
               ELAPSED=$((ELAPSED + 5))
             fi
           done
-      # Step 6: Install the .app file to the Simulator
+      # Step 7: Install the .app file to the Simulator
       - name: Install App to Simulator
         run: |
           # Find the most recent DerivedData folder

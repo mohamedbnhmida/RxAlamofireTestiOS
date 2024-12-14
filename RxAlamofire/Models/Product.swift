@@ -40,11 +40,11 @@ enum AvailabilityStatus: String, Codable {
     case lowStock = "Low Stock"
 }
 
-enum Category: String, Codable {
-    case beauty = "beauty"
-    case fragrances = "fragrances"
-    case furniture = "furniture"
-    case groceries = "groceries"
+enum Category:  Codable {
+    case beauty
+    case fragrances
+    case furniture
+    case groceries
 }
 
 // MARK: - Dimensions

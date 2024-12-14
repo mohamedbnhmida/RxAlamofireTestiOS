@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 import Resolver
 
-
 class AppCoordinator {
     private let window: UIWindow
     private var productCoordinator: ProductListCoordinator?
@@ -27,4 +26,3 @@ class AppCoordinator {
         productCoordinator?.start()
     }
 }
-
