@@ -79,9 +79,8 @@ jobs:
               sleep 5
               ELAPSED=$((ELAPSED + 5))
             fi
-          done
-      # Step 7: Install the .app file to the Simulator
-      # Step 7: Install the .app file to the Simulator
+          done  
+    # Step 7: Install the .app file to the Simulator
     - name: Install App to Simulator
       run: |
         # Find the most recent DerivedData folder
@@ -89,6 +88,10 @@ jobs:
 
         # Print the DerivedData path for debugging
         echo "Derived Data Path: $DERIVED_DATA_PATH"
+
+        # List contents to check the presence of the .app file
+        echo "Listing contents of DerivedData path:"
+        ls -R "$DERIVED_DATA_PATH/Build/Products"
 
         # Check if the 'Build' folder exists
         if [ ! -d "$DERIVED_DATA_PATH/Build" ]; then
