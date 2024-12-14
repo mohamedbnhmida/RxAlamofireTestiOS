@@ -32,6 +32,7 @@ class NetworkLogger: EventMonitor {
         print("<<NetworkLogger>> Method: \(method)")
         print("<<NetworkLogger>> Headers: \(headers)")
         print("<<NetworkLogger>> Body: \(body)")
+        print("Hello ")
     }
     
     private func logResponse(_ response: DataResponse<Data?, AFError>) {
