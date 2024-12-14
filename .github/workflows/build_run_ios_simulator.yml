@@ -1,4 +1,4 @@
-name: iOS Build
+name:  Build & Run on iOS Simulator
 
 on:
   push:
@@ -14,7 +14,7 @@ env:
 jobs:
   run:
     runs-on: self-hosted
-    name: Build iOS App
+    name: Build & Run on iOS Simulator
 
     steps:
       # Step 1: Checkout the repository code
@@ -39,7 +39,28 @@ jobs:
                      -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.1' \
                      clean build \
                      CODE_SIGN_STYLE=Automatic
-      # Step 5: Install the .app file to the Simulator
+      # Step 5: Ensure Simulator is Booted
+      - name: Ensure Simulator is Booted
+        run: |
+          # Open Simulator if not running
+          SIMULATOR_RUNNING=$(pgrep -x "Simulator" > /dev/null && echo "yes" || echo "no")
+          if [ "$SIMULATOR_RUNNING" == "no" ]; then
+            echo "Opening Simulator..."
+            open -a Simulator
+          fi
+          # Wait for a simulator to be booted
+          echo "Waiting for a simulator to boot..."
+          while true; do
+            BOOTED_SIMULATORS=$(xcrun simctl list devices | grep -E "Booted" | wc -l)
+            if [ "$BOOTED_SIMULATORS" -gt 0 ]; then
+              echo "Simulator is booted."
+              break
+            else
+              echo "No booted simulator found. Retrying in 5 seconds..."
+              sleep 5
+            fi
+          done
+      # Step 6: Install the .app file to the Simulator
       - name: Install App to Simulator
         run: |
           # Find the most recent DerivedData folder
@@ -47,8 +68,8 @@ jobs:
           APP_PATH="${DERIVED_DATA_PATH}/Build/Products/Debug-iphonesimulator/RxAlamofire.app"
           # Install the app to the simulator
           xcrun simctl install booted $APP_PATH
-      # Step 6: Launch the App on the Simulator
+      # Step 7: Launch the App on the Simulator
       - name: Launch App on Simulator
         run: |
           # Launch the app on the simulator (replace with your app's bundle identifier)
-           xcrun simctl launch booted benhmida.myRXExample  
+          xcrun simctl launch booted benhmida.myRXExample
