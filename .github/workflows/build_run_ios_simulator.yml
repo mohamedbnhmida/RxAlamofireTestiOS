@@ -31,8 +31,16 @@ jobs:
         run: ls -a
       # Step 4: Run SwiftLint
       - name: Run SwiftLint
-        run: |
-          swiftlint lint
+        run: | 
+            swiftlint lint | while IFS= read -r line; do
+                if [[ $line == *"warning"* ]]; then
+                    echo -e "⚠️  \033[33m$line\033[0m"  # Yellow for warnings
+                elif [[ $line == *"error"* ]]; then
+                    echo -e "🔴 \033[31m$line\033[0m"  # Red for errors
+                else
+                    echo "$line"  # Default for other lines
+                fi
+            done
       # Step 5: Build the iOS App for Simulator
       - name: Build iOS App
         run: |
@@ -51,7 +59,7 @@ jobs:
             echo "Opening Simulator..."
             open -a Simulator
           fi
-
+      
           # Wait for a simulator to be booted with a timeout of 2 minutes (120 seconds)
           echo "Waiting for a simulator to boot..."
           TIMEOUT=120
@@ -59,7 +67,9 @@ jobs:
           while true; do
             BOOTED_SIMULATORS=$(xcrun simctl list devices | grep -E "Booted" | wc -l)
             if [ "$BOOTED_SIMULATORS" -gt 0 ]; then
-              echo "Simulator is booted."
+              # List all booted simulators and their details
+              echo "Booted simulators:"
+              xcrun simctl list devices | grep -E "Booted"
               break
             elif [ "$ELAPSED" -ge "$TIMEOUT" ]; then
               echo "Timeout reached: No simulator booted within $TIMEOUT seconds."
@@ -75,9 +85,36 @@ jobs:
         run: |
           # Find the most recent DerivedData folder
           DERIVED_DATA_PATH=$(find ~/Library/Developer/Xcode/DerivedData -name "RxAlamofire*" -type d | head -n 1)
+          
+          # Debug print: Show the derived data path
+          echo "Derived Data Path: $DERIVED_DATA_PATH"
+      
+          # Define the app path
           APP_PATH="${DERIVED_DATA_PATH}/Build/Products/Debug-iphonesimulator/RxAlamofire.app"
+          
+          # Debug print: Show the .app path
+          echo "App Path: $APP_PATH"
+      
+          # Check if the .app file exists
+          if [ -d "$APP_PATH" ]; then
+            echo "Found .app file at: $APP_PATH"
+          else
+            echo "Error: .app file not found at the expected path: $APP_PATH"
+            exit 1
+          fi
+      
           # Install the app to the simulator
+          echo "Installing app to simulator..."
           xcrun simctl install booted $APP_PATH
+      
+          # Debug: Check if the app was successfully installed
+          INSTALL_STATUS=$(xcrun simctl listapps booted | grep -E "RxAlamofire")
+          if [ -z "$INSTALL_STATUS" ]; then
+            echo "Error: Failed to install the app to the simulator."
+            exit 1
+          else
+            echo "App installed successfully to the simulator."
+          fi
       # Step 7: Launch the App on the Simulator
       - name: Launch App on Simulator
         run: |

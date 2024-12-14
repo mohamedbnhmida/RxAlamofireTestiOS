@@ -6,7 +6,8 @@
 // 
 
 import Foundation
-
+import UIKit
+import UIKit
 // MARK: - Product
 struct ProductResponse: Codable {
     let products: [Product]
