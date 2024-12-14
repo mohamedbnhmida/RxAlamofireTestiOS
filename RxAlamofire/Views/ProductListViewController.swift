@@ -11,8 +11,7 @@ class ProductListViewController: UIViewController {
     private let collectionView: UICollectionView
     private let viewModel: ProductListViewModel
     private let disposeBag = DisposeBag()
-    let s : String? = ""
-
+  
     init(viewModel: ProductListViewModel) {
         self.viewModel = viewModel
         let layout = UICollectionViewFlowLayout()
@@ -35,7 +34,11 @@ class ProductListViewController: UIViewController {
         setupViews()
         setupBindings()
         viewModel.fetchProducts()
-        let a = s!
+        let name: String? = "John Doe"
+
+        // Force unwrapping without checking if it's nil
+        let unwrappedName = name!
+        print(unwrappedName)
     }
 
     private func setupViews() {
