@@ -11,6 +11,7 @@ class ProductListViewController: UIViewController {
     private let collectionView: UICollectionView
     private let viewModel: ProductListViewModel
     private let disposeBag = DisposeBag()
+    let s : String? = ""
 
     init(viewModel: ProductListViewModel) {
         self.viewModel = viewModel
@@ -34,6 +35,7 @@ class ProductListViewController: UIViewController {
         setupViews()
         setupBindings()
         viewModel.fetchProducts()
+        let a = s!
     }
 
     private func setupViews() {
