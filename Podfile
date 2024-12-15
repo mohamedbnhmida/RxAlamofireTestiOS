@@ -17,6 +17,8 @@ target 'RxAlamofire' do
   end 
   pod 'RxSwift', '~> 6.0'
   pod 'RxCocoa', '~> 6.0'
+  pod 'RxTest'
+  pod 'RxBlocking'
   pod 'Resolver', '~> 1.4'
   pod 'Kingfisher'
   pod 'Alamofire'
