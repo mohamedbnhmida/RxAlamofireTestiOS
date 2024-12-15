@@ -1,11 +1,11 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/configuration-reference
+# Use the latest 2.1 version of CircleCI pipeline process engine
 version: 2.1 
 
 jobs:
   build:
+    resource_class: medbh-macbook-pro/rxexample # Specify your custom runner
     macos:
-      xcode: "16.1" # Use your required Xcode version
+      xcode: "16.1" # Use the required Xcode version installed on your runner
     steps:
       # Step 1: Checkout code
       - checkout
@@ -32,7 +32,7 @@ jobs:
       - run:
           name: Decode GoogleService-Info.plist
           command: |
-            echo $GOOGLE_PLIST_BASE64 | base64 --decode > GoogleService-Info.plist
+            base64 --decode -i encoded_plist.txt -o GoogleService-Info.plist
 
       # Step 6: Build the iOS app
       - run:
