@@ -1,2 +1,121 @@
 
- 
+name:  Build & Run on iOS Simulator
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+
+jobs:
+  run:
+    runs-on: self-hosted
+    name: Build & Run on iOS Simulator
+
+    steps:
+      # Step 1: Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Decode GoogleService-Info.plist (if applicable)
+      - name: Decode GoogleService-Info.plist
+        run: |
+          base64 --decode -i encoded_plist.txt -o GoogleService-Info.plist
+          
+      # Step 3: Verify GoogleService-Info.plist
+      - name: Verify GoogleService-Info.plist
+        run: ls -a
+      # Step 4: Run SwiftLint
+      - name: Run SwiftLint
+        run: | 
+            swiftlint lint | while IFS= read -r line; do
+                if [[ $line == *"warning"* ]]; then
+                    echo -e "⚠️  \033[33m$line\033[0m"  # Yellow for warnings
+                elif [[ $line == *"error"* ]]; then
+                    echo -e "🔴 \033[31m$line\033[0m"  # Red for errors
+                else
+                    echo "$line"  # Default for other lines
+                fi
+            done
+      # Step 5: Build the iOS App for Simulator
+      - name: Build iOS App
+        run: |
+          xcodebuild -workspace RxAlamofire.xcworkspace \
+                     -scheme RxAlamofire \
+                     -sdk iphonesimulator \
+                     -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.1' \
+                     clean build \
+                     CODE_SIGN_STYLE=Automatic
+      # Step 6: Ensure Simulator is Booted
+      - name: Ensure Simulator is Booted
+        run: |
+          # Open Simulator if not running
+          SIMULATOR_RUNNING=$(pgrep -x "Simulator" > /dev/null && echo "yes" || echo "no")
+          if [ "$SIMULATOR_RUNNING" == "no" ]; then
+            echo "Opening Simulator..."
+            open -a Simulator
+          fi
+      
+          # Wait for a simulator to be booted with a timeout of 2 minutes (120 seconds)
+          echo "Waiting for a simulator to boot..."
+          TIMEOUT=120
+          ELAPSED=0
+          while true; do
+            BOOTED_SIMULATORS=$(xcrun simctl list devices | grep -E "Booted" | wc -l)
+            if [ "$BOOTED_SIMULATORS" -gt 0 ]; then
+              # List all booted simulators and their details
+              echo "Booted simulators:"
+              xcrun simctl list devices | grep -E "Booted"
+              break
+            elif [ "$ELAPSED" -ge "$TIMEOUT" ]; then
+              echo "Timeout reached: No simulator booted within $TIMEOUT seconds."
+              exit 1
+            else
+              echo "No booted simulator found. Retrying in 5 seconds..."
+              sleep 5
+              ELAPSED=$((ELAPSED + 5))
+            fi
+          done  
+    # Step 7: Install the .app file to the Simulator
+      - name: Install App to Simulator
+        run: |
+          # Find the most recent DerivedData folder
+          DERIVED_DATA_PATH=$(find ~/Library/Developer/Xcode/DerivedData -name "RxAlamofire*" -type d | head -n 1)
+
+          # Print the DerivedData path for debugging
+          echo "Derived Data Path: $DERIVED_DATA_PATH"
+
+          # List contents to check the presence of the .app file
+          echo "Listing contents of DerivedData path:"
+          ls -R "$DERIVED_DATA_PATH/Build/Products"
+
+          # Check if the 'Build' folder exists
+          if [ ! -d "$DERIVED_DATA_PATH/Build" ]; then
+            echo "Error: Build folder not found in DerivedData."
+            exit 1
+          fi
+
+          # Find the .app file in the correct Build folder
+          APP_PATH=$(find "$DERIVED_DATA_PATH/Build/Products" -name "RxAlamofire.app" | head -n 1)
+
+          # Print the app path for debugging
+          echo "App Path: $APP_PATH"
+
+          # Check if the .app file exists
+          if [ ! -f "$APP_PATH" ]; then
+            echo "Error: .app file not found at the expected path: $APP_PATH"
+            exit 1
+          fi
+
+          # Install the app to the simulator
+          xcrun simctl install booted "$APP_PATH"
+        # Step 7: Launch the App on the Simulator
+      - name: Launch App on Simulator
+        run: |
+            # Launch the app on the simulator (replace with your app's bundle identifier)
+            xcrun simctl launch booted benhmida.myRXExample
