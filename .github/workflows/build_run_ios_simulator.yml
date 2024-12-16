@@ -33,7 +33,7 @@ jobs:
       # Step 4: Run SwiftLint
       - name: Run SwiftLint
         run: | 
-            swiftlint lint | while IFS= read -r line; do
+            swiftlint lint --strict  | while IFS= read -r line; do
                 if [[ $line == *"warning"* ]]; then
                     echo -e "⚠️  \033[33m$line\033[0m"  # Yellow for warnings
                 elif [[ $line == *"error"* ]]; then
