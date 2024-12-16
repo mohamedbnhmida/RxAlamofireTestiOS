@@ -19,7 +19,7 @@ excluded:
   - Carthage   # Exclude the Carthage directory (Carthage dependencies)
   - fastlane   # Exclude the fastlane directory (used for CI/CD tools)
   - build      # Exclude the build directory (build artifacts)
-
+line_length: 5
 # Rules configuration
 rules:
   duplicate_imports:  # Enable the rule for duplicate imports
