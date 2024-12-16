@@ -1,9 +1,9 @@
 # .swiftlint.yml
 
 # Disable specific rules
-# disabled_rules:
-#   - trailing_whitespace  # Disables the rule that enforces no trailing whitespace
-#   - line_length          # Disables the rule that enforces a maximum line length
+disabled_rules:
+  - trailing_whitespace  # Disables the rule that enforces no trailing whitespace
+  - line_length          # Disables the rule that enforces a maximum line length
 
 # Enable specific rules (opt-in)
 opt_in_rules:
