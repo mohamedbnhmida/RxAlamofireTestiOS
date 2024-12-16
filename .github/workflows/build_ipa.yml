@@ -116,3 +116,20 @@ jobs:
           # Copy the IPA to the Desktop
           cp "$IPA_NAME" "$DESKTOP_PATH/"
           echo "Copied $IPA_NAME to $DESKTOP_PATH"
+      # Step 9: Deploy to Firebase App Distribution
+      - name: Deploy to Firebase App Distribution 
+        run: |
+          IPA_NAME="RxAlamofire.ipa"
+          APP_ID="1:637313294823:ios:ffb13f112f53f029bf9d42" # Replace with your Firebase App ID
+
+          # Verify the IPA exists
+          if [ ! -f "$IPA_NAME" ]; then
+            echo "Error: .ipa file not found: $IPA_NAME"
+            exit 1
+          fi
+
+          # Deploy to Firebase
+          firebase appdistribution:distribute "$IPA_NAME" \
+            --app "$APP_ID" \
+            --groups "testers" \
+            --token "1//09XF99ZH64mrdCgYIARAAGAkSNgF-L9Irh4ClxaeyYRfJ7Q_ymW7W8T3QmxpPj1YVC4u2d4jaO3kFMOkKQcq8pJ2qAYIXk8qXMg"
