@@ -1,52 +1,12 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine
-version: 2.1 
-
-jobs:
-  build:
-    resource_class: medbh-macbook-pro/rxexample # Specify your custom runner
-    macos:
-      xcode: "16.1" # Use the required Xcode version installed on your runner
-    steps:
-      # Step 1: Checkout code
-      - checkout
-
-      # Step 2: Restore cache for dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "Podfile.lock" }}
-      
-      # Step 3: Install dependencies
-      - run:
-          name: Install CocoaPods
-          command: |
-            gem install cocoapods
-            pod install
-
-      # Step 4: Save cache for future builds
-      - save_cache:
-          paths:
-            - Pods
-          key: v1-dependencies-{{ checksum "Podfile.lock" }}
-
-      # Step 5: Decode GoogleService-Info.plist (if applicable)
-      - run:
-          name: Decode GoogleService-Info.plist
-          command: |
-            base64 --decode -i encoded_plist.txt -o GoogleService-Info.plist
-
-            
-      # Step 6: Build the iOS app
-      - run:
-          name: Build iOS App
-          command: |
-            xcodebuild -workspace RxAlamofire.xcworkspace \
-                       -scheme RxAlamofire \
-                       -sdk iphonesimulator \
-                       -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.1' \
-                       clean build CODE_SIGN_STYLE=Automatic 
+version: 2.1
 
 workflows:
-  version: 2
-  build_and_test:
+  build-workflow:
     jobs:
-      - build
+      - runner
+jobs:
+  runner:
+    machine: true
+    resource_class: medbh-macbook-pro/rxexample
+    steps:
+      - run: echo "Hi I'm on Runners!"
