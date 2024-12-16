@@ -44,7 +44,10 @@ class ProductListViewController: UIViewController {
     private func setupViews() {
         title = "Products"
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(ProductCollectionViewCell.self, forCellWithReuseIdentifier: ProductCollectionViewCell.identifier)
+        collectionView.register(
+            ProductCollectionViewCell.self,
+            forCellWithReuseIdentifier: ProductCollectionViewCell.identifier
+        )
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
@@ -57,7 +60,12 @@ class ProductListViewController: UIViewController {
 
     private func setupBindings() {
         viewModel.products
-            .bind(to: collectionView.rx.items(cellIdentifier: ProductCollectionViewCell.identifier, cellType: ProductCollectionViewCell.self)) { row, product, cell in
+            .bind(
+                to: collectionView.rx.items(
+                    cellIdentifier: ProductCollectionViewCell.identifier,
+                    cellType: ProductCollectionViewCell.self
+                )
+            ) { row, product, cell in
                 cell.configure(with: product)
             }
             .disposed(by: disposeBag)
