@@ -34,6 +34,7 @@ jobs:
           command: |
             base64 --decode -i encoded_plist.txt -o GoogleService-Info.plist
 
+            
       # Step 6: Build the iOS app
       - run:
           name: Build iOS App
@@ -42,7 +43,7 @@ jobs:
                        -scheme RxAlamofire \
                        -sdk iphonesimulator \
                        -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.1' \
-                       clean build CODE_SIGN_STYLE=Automatic
+                       clean build CODE_SIGN_STYLE=Automatic 
 
 workflows:
   version: 2
