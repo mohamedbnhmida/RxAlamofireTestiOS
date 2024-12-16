@@ -48,13 +48,10 @@ jobs:
         run: |
           xcodebuild -workspace RxAlamofire.xcworkspace \
                      -scheme RxAlamofire \
-                     -sdk iphoneos \
-                     -configuration Release \
+                     -sdk iphonesimulator \
+                     -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.1' \
                      clean build \
-                     CODE_SIGN_STYLE=Manual \
-                     CODE_SIGN_IDENTITY="" \
-                     PROVISIONING_PROFILE_SPECIFIER="" \
-                     BUILD_DIR=build
+                     CODE_SIGN_STYLE=Automatic
       
       # Step 6: Locate the .app file in DerivedData
       - name: Locate .app file
