@@ -14,7 +14,7 @@ env:
 jobs:
   package-ipa:
     runs-on: self-hosted
-    name: Build & Package iOS App as IPA
+    name: Build & Package iOS App as IPA 
 
     steps:
       # Step 1: Checkout the repository code
